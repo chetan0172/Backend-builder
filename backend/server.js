@@ -22,6 +22,24 @@ const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
+// Root route (for browser & sanity check)
+app.get('/', (req, res) => {
+    res.status(200).json({
+        service: 'AI Website Generator Backend',
+        status: 'running',
+        environment: process.env.NODE_ENV || 'development',
+        version: '1.0.0',
+        endpoints: {
+            health: '/health',
+            generate: '/api/generate/website',
+            update: '/api/generate/update',
+            deploy: '/api/deploy',
+            domainSearch: '/api/domains/search'
+        }
+    });
+});
+
+
 // Health check
 app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
